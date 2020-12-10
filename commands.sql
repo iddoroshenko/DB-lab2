@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS Flower;
 DROP TABLE IF EXISTS Provider;
 CREATE TABLE Provider(
 	id INTEGER NOT NULL UNIQUE,
@@ -26,13 +27,27 @@ CREATE TABLE Flower(
 	worker INTEGER NOT NULL,
 	amount INTEGER NOT NULL,
 	value INTEGER NOT NULL,
-	totalCost INTEGER NOT NULL,
+	totalCost INTEGER,
 	PRIMARY KEY (id),
 	FOREIGN KEY (provider) REFERENCES Provider(id) ON DELETE CASCADE,
 	FOREIGN KEY (worker) REFERENCES Worker(id) ON DELETE CASCADE
 );
 
 CREATE INDEX name ON Flower (name);
+
+CREATE OR REPLACE FUNCTION update_totalCost() RETURNS TRIGGER
+AS $$
+BEGIN
+IF TG_OP = 'INSERT' THEN
+NEW.totalCost = NEW.amount * NEW.value;
+END IF;
+RETURN NEW; END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS update_totalCost on Flower;
+
+CREATE TRIGGER update_totalCost AFTER INSERT OR UPDATE ON Flower
+FOR EACH ROW EXECUTE PROCEDURE update_totalCost();
 
 INSERT INTO Provider (id, name, district, discount)
 VALUES
@@ -53,7 +68,7 @@ VALUES
 (003,	'Андрей Носков',		'Сормовский',		25000),
 (004,	'Алина Соловьева',		'Автозаводский',	19000),
 (005,	'Александра Вохмянина',	'Кстово',			40000),
-(006,	'Козлова Оксана',		'Сормовский',		15000);
+(006,	'Оксана Козлова',		'Сормовский',		15000);
 
 INSERT INTO Flower (id, name, provider, date, color, worker, amount, value)
 VALUES 
@@ -73,5 +88,8 @@ VALUES
 (00140, 	'Плющ',										009,	to_date('2020/06/30','YYYY/MM/DD'),		'зеленый',		001,	10,	299),
 (00141, 	'Эхеверия Мэджик',							001,	to_date('2020/06/30','YYYY/MM/DD'),		'зеленый',		005,	3,	499),
 (00142, 	'Хавортия мороз',							002,	to_date('2020/07/07','YYYY/MM/DD'),		'белый',		006,	2,	529),
-(00143, 	'Крассула Овата',							003,	to_date('2020/09/10','YYYY/MM/DD'),		'зеленый',		004,	5,	1699);
-(00143, 	'Хавортия',									003,	to_date('2020/09/10','YYYY/MM/DD'),		'красный',		001,	6,	399);
+(00143, 	'Крассула Овата',							003,	to_date('2020/09/10','YYYY/MM/DD'),		'зеленый',		004,	5,	1699),
+(00144, 	'Хавортия',									003,	to_date('2020/09/10','YYYY/MM/DD'),		'красный',		001,	6,	399);
+
+
+select * from flower
