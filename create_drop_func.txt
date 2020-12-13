@@ -50,18 +50,19 @@ CREATE FUNCTION create_db(dbname text, username text)
 
 				CREATE INDEX name ON Flower (name);
 
-				CREATE OR REPLACE FUNCTION update_totalCost() RETURNS TRIGGER
-				AS $$
-				BEGIN
-				IF TG_OP = ''INSERT'' THEN
-				NEW.totalCost = NEW.amount * NEW.value;
-				END IF;
-				RETURN NEW; END;
-				$$ LANGUAGE plpgsql;
+				DROP FUNCTION IF EXISTS update_totalCost() CASCADE;
+				CREATE OR REPLACE FUNCTION update_totalCost() 
+				RETURNS TRIGGER AS 
+				$$
+				BEGIN	
+					NEW.totalCost = NEW.amount*NEW.value;
+					RETURN NEW; 
+				END;
+				$$ 
+				LANGUAGE plpgsql;
 
 				DROP TRIGGER IF EXISTS update_totalCost on Flower;
-
-				CREATE TRIGGER update_totalCost AFTER INSERT OR UPDATE ON Flower
+				CREATE TRIGGER update_totalCost BEFORE INSERT OR UPDATE ON Flower
 				FOR EACH ROW EXECUTE PROCEDURE update_totalCost();
 				'
 			);
