@@ -85,8 +85,8 @@ CREATE FUNCTION add_to_worker(in_id INTEGER, in_name VARCHAR(40), in_address VAR
 
 
 -- добавление flower в таблицу
-DROP FUNCTION IF EXISTS add_to_flower(INTEGER, VARCHAR(40), INTEGER, DATE, VARCHAR(20), INTEGER, INTEGER, INTEGER);
-CREATE FUNCTION add_to_flower(in_id INTEGER, in_name VARCHAR(40), in_provider INTEGER, in_date DATE, in_color VARCHAR(20), in_worker INTEGER,
+DROP FUNCTION IF EXISTS add_to_flower(INTEGER, VARCHAR(40), INTEGER, VARCHAR(20), INTEGER, INTEGER, INTEGER);
+CREATE FUNCTION add_to_flower(in_id INTEGER, in_name VARCHAR(40), in_provider INTEGER, in_color VARCHAR(20), in_worker INTEGER,
 							  in_amount INTEGER, in_value INTEGER)
 	RETURNS INTEGER AS
 	$$
@@ -102,8 +102,8 @@ CREATE FUNCTION add_to_flower(in_id INTEGER, in_name VARCHAR(40), in_provider IN
 			RAISE NOTICE 'Flower with id % already exists', in_id;
 			RETURN 0;
 		ELSE
-			INSERT INTO flower (id, name, provider, date, color, worker, amount, value)
-			VALUES (in_id, in_name, in_provider, in_date, in_color, in_worker, in_amount, in_value);
+			INSERT INTO flower (id, name, provider, color, worker, amount, value)
+			VALUES (in_id, in_name, in_provider, in_color, in_worker, in_amount, in_value);
 			RETURN 1;
 		END IF;
 	END;
@@ -114,7 +114,7 @@ CREATE FUNCTION add_to_flower(in_id INTEGER, in_name VARCHAR(40), in_provider IN
 -- поиск по названию цветка
 DROP FUNCTION IF EXISTS search_flower_by_name(VARCHAR(40));
 CREATE FUNCTION search_flower_by_name(in_name VARCHAR(40))
-	RETURNS TABLE (id INTEGER,	name VARCHAR(40), provider INTEGER,	date DATE ,	color VARCHAR(20), worker INTEGER, amount INTEGER, value INTEGER, totalCost INTEGER) AS
+	RETURNS TABLE (id INTEGER,	name VARCHAR(40), provider INTEGER ,color VARCHAR(20), worker INTEGER, amount INTEGER, value INTEGER, totalCost INTEGER) AS
 	$$
 	BEGIN 
 		IF EXISTS (SELECT f.name FROM flower f WHERE f.name = in_name) THEN
@@ -132,8 +132,8 @@ LANGUAGE plpgsql;
 -- [7]
 -- обновление записи в таблице flower по id 
 -- если на вход вместо числа подается -1 или если вместо строки подается ' ', этот аттрибут остается без изменения 
-DROP FUNCTION IF EXISTS update_flower(INTEGER, VARCHAR(40), INTEGER, DATE, VARCHAR(20), INTEGER, INTEGER, INTEGER);
-CREATE FUNCTION update_flower(in_id INTEGER, in_name VARCHAR(40), in_provider INTEGER, in_date DATE, in_color VARCHAR(20), in_worker INTEGER,
+DROP FUNCTION IF EXISTS update_flower(INTEGER, VARCHAR(40), INTEGER, VARCHAR(20), INTEGER, INTEGER, INTEGER);
+CREATE FUNCTION update_flower(in_id INTEGER, in_name VARCHAR(40), in_provider INTEGER, in_color VARCHAR(20), in_worker INTEGER,
 							  in_amount INTEGER, in_value INTEGER)
 	RETURNS INTEGER AS
 	$$
@@ -268,6 +268,54 @@ CREATE FUNCTION delete_worker_by_id(in_id INTEGER)
 		ELSE 
 			RAISE NOTICE 'Worker with id % does not exist', in_id;
 			RETURN 0;
+		END IF;
+	END;
+	$$
+LANGUAGE plpgsql;
+
+-- вывод таблицы цветов
+DROP FUNCTION IF EXISTS print_table_flower();
+CREATE FUNCTION print_table_flower()
+	RETURNS TABLE (id INTEGER,	name VARCHAR(40), provider INTEGER ,	color VARCHAR(20), worker INTEGER, amount INTEGER, value INTEGER, totalCost INTEGER) AS
+	$$
+	BEGIN
+		IF EXISTS (SELECT * FROM flower) THEN
+			RETURN QUERY
+				SELECT * FROM flower;
+		ELSE
+			RAISE NOTICE 'Table is empty';
+		END IF;
+	END;
+	$$
+LANGUAGE plpgsql;
+
+-- вывод таблицы поставщиков
+DROP FUNCTION IF EXISTS print_table_provider();
+CREATE FUNCTION print_table_provider()
+	RETURNS TABLE (id INTEGER,	name VARCHAR(40), district VARCHAR(20), discount INTEGER) AS
+	$$
+	BEGIN
+		IF EXISTS (SELECT * FROM provider) THEN
+			RETURN QUERY
+				SELECT * FROM provider;
+		ELSE
+			RAISE NOTICE 'Table is empty';
+		END IF;
+	END;
+	$$
+LANGUAGE plpgsql;
+
+-- вывод таблицы работников
+DROP FUNCTION IF EXISTS print_table_worker();
+CREATE FUNCTION print_table_worker()
+	RETURNS TABLE (id INTEGER,	name VARCHAR(40), address VARCHAR(20), payment INTEGER) AS
+	$$
+	BEGIN
+		IF EXISTS (SELECT * FROM worker) THEN
+			RETURN QUERY
+				SELECT * FROM worker;
+		ELSE
+			RAISE NOTICE 'Table is empty';
 		END IF;
 	END;
 	$$
