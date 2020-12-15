@@ -131,7 +131,7 @@ LANGUAGE plpgsql;
 
 -- [7]
 -- обновление записи в таблице flower по id 
--- если на вход вместо числа подается -1 или если вместо строки подается ' ', этот аттрибут остается без изменения 
+-- если на вход вместо числа подается -1 или если вместо строки подается '', этот аттрибут остается без изменения
 DROP FUNCTION IF EXISTS update_flower(INTEGER, VARCHAR(40), INTEGER, VARCHAR(20), INTEGER, INTEGER, INTEGER);
 CREATE FUNCTION update_flower(in_id INTEGER, in_name VARCHAR(40), in_provider INTEGER, in_color VARCHAR(20), in_worker INTEGER,
 							  in_amount INTEGER, in_value INTEGER)
@@ -147,7 +147,7 @@ CREATE FUNCTION update_flower(in_id INTEGER, in_name VARCHAR(40), in_provider IN
 				RAISE NOTICE 'Worker % does not exist', in_worker;
 				RETURN 0;
 			ELSE
-				IF (in_name <> ' ') THEN 
+				IF (in_name <> '') THEN
 					UPDATE flower f
 					SET name = in_name
 					WHERE id = in_id;
@@ -157,14 +157,7 @@ CREATE FUNCTION update_flower(in_id INTEGER, in_name VARCHAR(40), in_provider IN
 					SET provider = in_provider
 					WHERE id = in_id;
 				END IF;
-				/*
-				IF (in_date <> ' ') THEN 
-					UPDATE flower 
-					SET date = in_date
-					WHERE id = in_id;
-				END IF;
-				*/
-				IF (in_color <> ' ') THEN 
+				IF (in_color <> '') THEN
 					UPDATE flower 
 					SET color = in_color
 					WHERE id = in_id;

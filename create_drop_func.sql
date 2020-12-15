@@ -37,7 +37,6 @@ CREATE FUNCTION create_db(dbname text, username text)
 					id INTEGER NOT NULL UNIQUE,
 					name VARCHAR(40) NOT NULL,
 					provider INTEGER NOT NULL,
-					date DATE NOT NULL,
 					color VARCHAR(20) NOT NULL,
 					worker INTEGER NOT NULL,
 					amount INTEGER NOT NULL,

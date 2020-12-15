@@ -23,6 +23,7 @@ fin.close()
 
 engineURL = ''
 
+
 def connect_as_creator(username_creator, password_creator, main_db, cr_dr_func):
     engine = create_engine(
         "postgresql+psycopg2://{}:{}@localhost/{}".format(username_creator, password_creator, main_db),
@@ -93,13 +94,13 @@ def add_to_worker(connection, in_id, in_name, in_address, in_payment):
     connection.commit()
 
 
-def add_to_flower(connection, in_id, in_name, in_provider, in_date, in_color, in_worker,
+def add_to_flower(connection, in_id, in_name, in_provider, in_color, in_worker,
                   in_amount, in_value):
     cursor = connection.cursor()
     cursor.execute(
-        'SELECT add_to_flower({}, \'{}\', {}, \'{}\', \'{}\', {}, {}, {})'.format(in_id, in_name, in_provider, in_date,
-                                                                                  in_color, in_worker,
-                                                                                  in_amount, in_value))
+        'SELECT add_to_flower({}, \'{}\', {}, \'{}\', {}, {}, {})'.format(in_id, in_name, in_provider,
+                                                                          in_color, in_worker,
+                                                                          in_amount, in_value))
     connection.commit()
 
 
@@ -110,13 +111,13 @@ def search_flower_by_name(connection, flower_name):
     return table
 
 
-def update_flower(connection, in_id, in_name, in_provider, in_date, in_color, in_worker,
+def update_flower(connection, in_id, in_name, in_provider, in_color, in_worker,
                   in_amount, in_value):
     cursor = connection.cursor()
     cursor.execute(
-        'SELECT update_flower({}, \'{}\', {}, \'{}\', \'{}\', {}, {}, {})'.format(in_id, in_name, in_provider, in_date,
-                                                                                  in_color, in_worker,
-                                                                                  in_amount, in_value))
+        'SELECT update_flower({}, \'{}\', {}, \'{}\', {}, {}, {})'.format(in_id, in_name, in_provider,
+                                                                          in_color, in_worker,
+                                                                          in_amount, in_value))
     connection.commit()
 
 
@@ -151,6 +152,19 @@ def print_table_provider(connection):
     return table
 
 
+def print_table_worker(connection):
+    cursor = connection.cursor()
+    cursor.execute('SELECT print_table_worker()')
+    table = cursor.fetchall()
+    return table
+
+
+def print_table_flower(connection):
+    cursor = connection.cursor()
+    cursor.execute('SELECT print_table_flower()')
+    table = cursor.fetchall()
+    return table
+
 # Черновик:
 # add_to_provider(conn_u, 2,	'БАЗА ЦВЕТОВ 24', 'Ленинский', 0)
 # add_to_worker(conn_u, 2,	'Илья Дорошенко',		'Автозаводский',	31000)
@@ -168,10 +182,10 @@ def print_table_provider(connection):
 # drop_database('new', cr_dr_func)
 
 #conn_u = connect_as_user('viktor', 'viktor', 'new', func)  # коннектимся к базе как юзер, функция возвращает connection
-# add_to_provider(conn_u, 2, 'БАЗА ЦВЕТОВ 24', 'Ленинский',
-#                0)  # объект connection используется для всех функций работы с бд
-# add_to_worker(conn_u, 2, 'Илья Дорошенко', 'Автозаводский', 31000)
-# add_to_flower(conn_u, 1201, 'Роза', 2, '2020/01/20', 'красный', 2, 10, 159)
+#add_to_provider(conn_u, 2, 'БАЗА ЦВЕТОВ 24', 'Ленинский',
+#              0)  # объект connection используется для всех функций работы с бд
+#add_to_worker(conn_u, 2, 'Илья Дорошенко', 'Автозаводский', 31000)
+#add_to_flower(conn_u, 1201, 'Роза', 2, 'красный', 2, 10, 159)
 # update_flower(conn_u, 1200, 'Хризантема', -1, '2020/01/20', ' ', 2, 15, 280)
 
 # delete_flower_by_name(conn_u, 'Хризантема')
