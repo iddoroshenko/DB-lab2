@@ -30,12 +30,12 @@ def btnCommand_deleteDB():
         cursor = None
 
 
-
-
 def btnCommand_clearTablesDB():
+    if cursor is None:
+        return
+
     def btnCommand_clearTables():
-        if cursor is not None:
-            en.clear_all_tables(cursor)
+        en.clear_all_tables(cursor)
         root1.destroy()
 
     root1 = Toplevel()
@@ -155,15 +155,19 @@ def btnCommand_printTableFlower():
 
 
 def btnCommand_printTablesDB():
+    if cursor is None:
+        return
     btnCommand_printTableProvider()
     btnCommand_printTableWorker()
     btnCommand_printTableFlower()
 
 
 def btnCommand_workWithTableProvider():
+    if cursor is None:
+        return
+
     def btnCommand_clearTable():
-        if cursor is not None:
-            en.clear_provider(cursor)
+        en.clear_provider(cursor)
 
     def btnCommand_addNewLine():
         def btnAccept():
@@ -202,6 +206,7 @@ def btnCommand_workWithTableProvider():
         def btnAccept():
             en.delete_provider_by_id(cursor, entry1.get())
             root2.destroy()
+
         root2 = Toplevel()
         root2.geometry("600x250+400+400")
         label = Label(root2, text='Введите id')
@@ -233,6 +238,9 @@ def btnCommand_workWithTableProvider():
 
 
 def btnCommand_workWithTableWorker():
+    if cursor is None:
+        return
+
     def btnCommand_clearTable():
         if cursor is not None:
             en.clear_worker(cursor)
@@ -274,6 +282,7 @@ def btnCommand_workWithTableWorker():
         def btnAccept():
             en.delete_worker_by_id(cursor, entry1.get())
             root2.destroy()
+
         root2 = Toplevel()
         root2.geometry("600x250+400+400")
         label = Label(root2, text='Введите id')
@@ -305,6 +314,9 @@ def btnCommand_workWithTableWorker():
 
 
 def btnCommand_workWithTableFlower():
+    if cursor is None:
+        return
+
     def btnCommand_clearTable():
         if cursor is not None:
             en.clear_flower(cursor)
@@ -363,6 +375,7 @@ def btnCommand_workWithTableFlower():
         def btnAccept():
             en.delete_flower_by_id(cursor, entry1.get())
             root2.destroy()
+
         root2 = Toplevel()
         root2.geometry("600x250+400+400")
         label = Label(root2, text='Введите id')
@@ -380,6 +393,7 @@ def btnCommand_workWithTableFlower():
         def btnAccept():
             en.delete_flower_by_name(cursor, entry1.get())
             root2.destroy()
+
         root2 = Toplevel()
         root2.geometry("600x250+400+400")
         label = Label(root2, text='Введите имя')
@@ -427,7 +441,6 @@ def btnCommand_workWithTableFlower():
                                                                         values[4], values[5], values[6],
                                                                         values[7]))
             tree.pack()
-
 
         root2 = Toplevel()
         root2.geometry("600x250+400+400")
@@ -488,7 +501,6 @@ def btnCommand_workWithTableFlower():
         btn_accept.grid(row=2, column=1)
         btn_no = Button(root2, text="Отмена", command=root2.destroy, width=25)
         btn_no.grid(row=2, column=2)
-
 
     root1 = Toplevel()
     root1.title('Таблица "Цветы"')
