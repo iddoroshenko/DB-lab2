@@ -40,7 +40,7 @@ def btnCommand_clearTablesDB():
 
     root1 = Toplevel()
     root1.title('Подтведите действие')
-    root1.geometry("300x70+400+400")
+    root1.geometry("300x70+550+200")
     Label(root1, text="Вы уверены, что хотите очистить все таблицы?").pack(side=TOP)
     btn_yes = Button(root1, text="Да", command=btnCommand_clearTables)
     btn_no = Button(root1, text="Нет", command=root1.destroy)
@@ -51,16 +51,16 @@ def btnCommand_clearTablesDB():
 def btnCommand_printTableProvider():
     root2 = Toplevel()
     root2.title('Таблица "Провайдеры"')
+    root2.geometry("+30+100")
 
     tree = ttk.Treeview(root2, selectmode='browse')
 
     tree["columns"] = ("one", "two", "three")
-    tree.column("#0")
-    tree.column("one")
-    tree.column("two")
-    tree.column("three")
+    tree.column("#0", width=40, minwidth=40, anchor='center')
+    tree.column("one", anchor='center')
+    tree.column("two", anchor='center')
+    tree.column("three", anchor='center')
 
-    # tree.column("#0", width=270, minwidth=270, stretch=tk.NO)
     tree.heading("#0", text="id")
     tree.heading("one", text="name")
     tree.heading("two", text="district")
@@ -83,16 +83,16 @@ def btnCommand_printTableProvider():
 def btnCommand_printTableWorker():
     root2 = Toplevel()
     root2.title('Таблица "Работники"')
+    root2.geometry("+800+100")
 
     tree = ttk.Treeview(root2, selectmode='browse')
 
     tree["columns"] = ("one", "two", "three")
-    tree.column("#0")
-    tree.column("one")
-    tree.column("two")
-    tree.column("three")
+    tree.column("#0", width=40, minwidth=40, anchor='center')
+    tree.column("one", anchor='center')
+    tree.column("two", anchor='center')
+    tree.column("three", anchor='center')
 
-    # tree.column("#0", width=270, minwidth=270, stretch=tk.NO)
     tree.heading("#0", text="id")
     tree.heading("one", text="Имя")
     tree.heading("two", text="Адрес")
@@ -115,20 +115,20 @@ def btnCommand_printTableWorker():
 def btnCommand_printTableFlower():
     root2 = Toplevel()
     root2.title('Таблица "Цветы"')
+    root2.geometry("+30+500")
 
     tree = ttk.Treeview(root2, selectmode='browse')
 
     tree["columns"] = ("one", "two", "three", "four", "five", "six", "seven")
-    tree.column("#0")
-    tree.column("one")
-    tree.column("two")
-    tree.column("three")
-    tree.column("four")
-    tree.column("five")
-    tree.column("six")
-    tree.column("seven")
+    tree.column("#0", width=40, minwidth=40, anchor='center')
+    tree.column("one", anchor='center')
+    tree.column("two", anchor='center')
+    tree.column("three", anchor='center')
+    tree.column("four", anchor='center')
+    tree.column("five", anchor='center')
+    tree.column("six", anchor='center')
+    tree.column("seven", anchor='center')
 
-    # tree.column("#0", width=270, minwidth=270, stretch=tk.NO)
     tree.heading("#0", text="id")
     tree.heading("one", text="Название")
     tree.heading("two", text="Поставщик")
@@ -175,7 +175,7 @@ def btnCommand_workWithTableProvider():
             root2.destroy()
 
         root2 = Toplevel()
-        root2.geometry("600x250+400+400")
+        root2.geometry("600x250+550+200")
         label = Label(root2, text='id')
         label.grid(row=0, column=0)
         label = Label(root2, text='Имя')
@@ -186,20 +186,24 @@ def btnCommand_workWithTableProvider():
         label.grid(row=0, column=3)
         entry1 = Entry(root2, width=4, fg='blue', font=('Arial', 16, 'bold'))
         entry1.grid(row=1, column=0)
-        entry1.insert(0, '1')
+        result = en.print_table_provider(cursor)
+        var = 0
+        if len(result) != 0:
+            var = int(result[len(result) - 1][0].split(',')[0][1:])
+        entry1.insert(0, str(var+1))
         entry2 = Entry(root2, width=20, fg='blue', font=('Arial', 16, 'bold'))
         entry2.grid(row=1, column=1)
-        entry2.insert(0, '1')
+        entry2.insert(0, '')
         entry3 = Entry(root2, width=20, fg='blue', font=('Arial', 16, 'bold'))
         entry3.grid(row=1, column=2)
-        entry3.insert(0, '1')
+        entry3.insert(0, '')
         entry4 = Entry(root2, width=4, fg='blue', font=('Arial', 16, 'bold'))
         entry4.grid(row=1, column=3)
-        entry4.insert(0, '1')
+        entry4.insert(0, '0')
 
-        btn_accept = Button(root2, text="Принять", command=btnAccept, width=25)
+        btn_accept = Button(root2, text="Принять", command=btnAccept, width=20)
         btn_accept.grid(row=2, column=1)
-        btn_no = Button(root2, text="Отмена", command=root2.destroy, width=25)
+        btn_no = Button(root2, text="Отмена", command=root2.destroy, width=20)
         btn_no.grid(row=2, column=2)
 
     def btnCommand_deleteLine():
@@ -208,21 +212,21 @@ def btnCommand_workWithTableProvider():
             root2.destroy()
 
         root2 = Toplevel()
-        root2.geometry("600x250+400+400")
+        root2.geometry("600x250+550+200")
         label = Label(root2, text='Введите id')
         label.pack()
         entry1 = Entry(root2, width=4, fg='blue', font=('Arial', 16, 'bold'))
         entry1.insert(0, '0')
         entry1.pack()
 
-        btn_accept = Button(root2, text="Удалить", command=btnAccept, width=25)
+        btn_accept = Button(root2, text="Удалить", command=btnAccept, width=20)
         btn_accept.pack()
-        btn_no = Button(root2, text="Отмена", command=root2.destroy, width=25)
+        btn_no = Button(root2, text="Отмена", command=root2.destroy, width=20)
         btn_no.pack()
 
     root1 = Toplevel()
     root1.title('Таблица "Провайдеры"')
-    root1.geometry("400x250+400+400")
+    root1.geometry("400x250+550+200")
     btn_clearTable = Button(root1, text="Очистить таблицу", command=btnCommand_clearTable)
 
     btn_printTable = Button(root1, text="Вывести таблицу", command=btnCommand_printTableProvider)
@@ -251,7 +255,7 @@ def btnCommand_workWithTableWorker():
             root2.destroy()
 
         root2 = Toplevel()
-        root2.geometry("600x250+400+400")
+        root2.geometry("630x250+550+200")
         label = Label(root2, text='id')
         label.grid(row=0, column=0)
         label = Label(root2, text='Имя')
@@ -261,21 +265,25 @@ def btnCommand_workWithTableWorker():
         label = Label(root2, text='Зарплата')
         label.grid(row=0, column=3)
         entry1 = Entry(root2, width=4, fg='blue', font=('Arial', 16, 'bold'))
+        result = en.print_table_worker(cursor)
+        var = 0
+        if len(result) != 0:
+            var = int(result[len(result) - 1][0].split(',')[0][1:])
+        entry1.insert(0, str(var+1))
         entry1.grid(row=1, column=0)
-        entry1.insert(0, '1')
         entry2 = Entry(root2, width=20, fg='blue', font=('Arial', 16, 'bold'))
         entry2.grid(row=1, column=1)
         entry2.insert(0, '1')
         entry3 = Entry(root2, width=20, fg='blue', font=('Arial', 16, 'bold'))
         entry3.grid(row=1, column=2)
         entry3.insert(0, '1')
-        entry4 = Entry(root2, width=4, fg='blue', font=('Arial', 16, 'bold'))
+        entry4 = Entry(root2, width=7, fg='blue', font=('Arial', 16, 'bold'))
         entry4.grid(row=1, column=3)
         entry4.insert(0, '1')
 
-        btn_accept = Button(root2, text="Принять", command=btnAccept, width=25)
+        btn_accept = Button(root2, text="Принять", command=btnAccept, width=20)
         btn_accept.grid(row=2, column=1)
-        btn_no = Button(root2, text="Отмена", command=root2.destroy, width=25)
+        btn_no = Button(root2, text="Отмена", command=root2.destroy, width=20)
         btn_no.grid(row=2, column=2)
 
     def btnCommand_deleteLine():
@@ -284,21 +292,21 @@ def btnCommand_workWithTableWorker():
             root2.destroy()
 
         root2 = Toplevel()
-        root2.geometry("600x250+400+400")
+        root2.geometry("600x250+550+200")
         label = Label(root2, text='Введите id')
         label.pack()
         entry1 = Entry(root2, width=4, fg='blue', font=('Arial', 16, 'bold'))
         entry1.insert(0, '0')
         entry1.pack()
 
-        btn_accept = Button(root2, text="Удалить", command=btnAccept, width=25)
+        btn_accept = Button(root2, text="Удалить", command=btnAccept, width=20)
         btn_accept.pack()
-        btn_no = Button(root2, text="Отмена", command=root2.destroy, width=25)
+        btn_no = Button(root2, text="Отмена", command=root2.destroy, width=20)
         btn_no.pack()
 
     root1 = Toplevel()
     root1.title('Таблица "Работники"')
-    root1.geometry("400x250+400+400")
+    root1.geometry("400x250+550+200")
     btn_clearTable = Button(root1, text="Очистить таблицу", command=btnCommand_clearTable)
 
     btn_printTable = Button(root1, text="Вывести таблицу", command=btnCommand_printTableWorker)
@@ -328,7 +336,7 @@ def btnCommand_workWithTableFlower():
             root2.destroy()
 
         root2 = Toplevel()
-        root2.geometry("1500x250+400+400")
+        root2.geometry("830x250+550+200")
         label = Label(root2, text='id')
         label.grid(row=0, column=0)
         label = Label(root2, text='Название')
@@ -344,31 +352,35 @@ def btnCommand_workWithTableFlower():
         label = Label(root2, text='Стоимость')
         label.grid(row=0, column=6)
         entry1 = Entry(root2, width=4, fg='blue', font=('Arial', 16, 'bold'))
+        result = en.print_table_flower(cursor)
+        var = 0
+        if len(result) != 0:
+            var = int(result[len(result) - 1][0].split(',')[0][1:])
         entry1.grid(row=1, column=0)
-        entry1.insert(0, '1')
+        entry1.insert(0, str(var + 1))
         entry2 = Entry(root2, width=20, fg='blue', font=('Arial', 16, 'bold'))
         entry2.grid(row=1, column=1)
-        entry2.insert(0, '1')
-        entry3 = Entry(root2, width=20, fg='blue', font=('Arial', 16, 'bold'))
+        entry2.insert(0, '')
+        entry3 = Entry(root2, width=4, fg='blue', font=('Arial', 16, 'bold'))
         entry3.grid(row=1, column=2)
         entry3.insert(0, '1')
-        entry4 = Entry(root2, width=4, fg='blue', font=('Arial', 16, 'bold'))
+        entry4 = Entry(root2, width=20, fg='blue', font=('Arial', 16, 'bold'))
         entry4.grid(row=1, column=3)
-        entry4.insert(0, '1')
+        entry4.insert(0, '')
         entry5 = Entry(root2, width=4, fg='blue', font=('Arial', 16, 'bold'))
         entry5.grid(row=1, column=4)
         entry5.insert(0, '1')
         entry6 = Entry(root2, width=4, fg='blue', font=('Arial', 16, 'bold'))
         entry6.grid(row=1, column=5)
         entry6.insert(0, '1')
-        entry7 = Entry(root2, width=4, fg='blue', font=('Arial', 16, 'bold'))
+        entry7 = Entry(root2, width=7, fg='blue', font=('Arial', 16, 'bold'))
         entry7.grid(row=1, column=6)
         entry7.insert(0, '1')
 
-        btn_accept = Button(root2, text="Принять", command=btnAccept, width=25)
+        btn_accept = Button(root2, text="Принять", command=btnAccept, width=20)
         btn_accept.grid(row=2, column=1)
-        btn_no = Button(root2, text="Отмена", command=root2.destroy, width=25)
-        btn_no.grid(row=2, column=2)
+        btn_no = Button(root2, text="Отмена", command=root2.destroy, width=20)
+        btn_no.grid(row=2, column=3)
 
     def btnCommand_deleteLineById():
         def btnAccept():
@@ -376,16 +388,16 @@ def btnCommand_workWithTableFlower():
             root2.destroy()
 
         root2 = Toplevel()
-        root2.geometry("600x250+400+400")
+        root2.geometry("600x250+550+200")
         label = Label(root2, text='Введите id')
         label.pack()
         entry1 = Entry(root2, width=4, fg='blue', font=('Arial', 16, 'bold'))
         entry1.insert(0, '0')
         entry1.pack()
 
-        btn_accept = Button(root2, text="Удалить", command=btnAccept, width=25)
+        btn_accept = Button(root2, text="Удалить", command=btnAccept, width=20)
         btn_accept.pack()
-        btn_no = Button(root2, text="Отмена", command=root2.destroy, width=25)
+        btn_no = Button(root2, text="Отмена", command=root2.destroy, width=20)
         btn_no.pack()
 
     def btnCommand_deleteLineByName():
@@ -394,16 +406,16 @@ def btnCommand_workWithTableFlower():
             root2.destroy()
 
         root2 = Toplevel()
-        root2.geometry("600x250+400+400")
+        root2.geometry("600x250+550+200")
         label = Label(root2, text='Введите имя')
         label.pack()
         entry1 = Entry(root2, width=20, fg='blue', font=('Arial', 16, 'bold'))
         entry1.insert(0, '')
         entry1.pack()
 
-        btn_accept = Button(root2, text="Удалить", command=btnAccept, width=25)
+        btn_accept = Button(root2, text="Удалить", command=btnAccept, width=20)
         btn_accept.pack()
-        btn_no = Button(root2, text="Отмена", command=root2.destroy, width=25)
+        btn_no = Button(root2, text="Отмена", command=root2.destroy, width=20)
         btn_no.pack()
 
     def btnCommand_findLine():
@@ -414,7 +426,7 @@ def btnCommand_workWithTableFlower():
             tree = ttk.Treeview(root3, selectmode='browse')
 
             tree["columns"] = ("one", "two", "three", "four", "five", "six", "seven")
-            tree.column("#0")
+            tree.column("#0", width=40, minwidth=40)
             tree.column("one")
             tree.column("two")
             tree.column("three")
@@ -423,7 +435,6 @@ def btnCommand_workWithTableFlower():
             tree.column("six")
             tree.column("seven")
 
-            # tree.column("#0", width=270, minwidth=270, stretch=tk.NO)
             tree.heading("#0", text="id")
             tree.heading("one", text="Название")
             tree.heading("two", text="Поставщик")
@@ -442,14 +453,14 @@ def btnCommand_workWithTableFlower():
             tree.pack()
 
         root2 = Toplevel()
-        root2.geometry("600x250+400+400")
+        root2.geometry("600x250+550+200")
         label = Label(root2, text='Введите имя')
         label.pack()
         entry1 = Entry(root2, width=20, fg='blue', font=('Arial', 16, 'bold'))
         entry1.insert(0, '')
         entry1.pack()
 
-        btn_accept = Button(root2, text="Принять", command=btnAccept, width=25)
+        btn_accept = Button(root2, text="Принять", command=btnAccept, width=20)
         btn_accept.pack()
 
     def btnCommand_updateLine():
@@ -459,7 +470,7 @@ def btnCommand_workWithTableFlower():
             root2.destroy()
 
         root2 = Toplevel()
-        root2.geometry("1500x250+400+400")
+        root2.geometry("830x250+550+200")
         label = Label(root2, text='id')
         label.grid(row=0, column=0)
         label = Label(root2, text='Название')
@@ -480,10 +491,10 @@ def btnCommand_workWithTableFlower():
         entry2 = Entry(root2, width=20, fg='blue', font=('Arial', 16, 'bold'))
         entry2.grid(row=1, column=1)
         entry2.insert(0, '')
-        entry3 = Entry(root2, width=20, fg='blue', font=('Arial', 16, 'bold'))
+        entry3 = Entry(root2, width=4, fg='blue', font=('Arial', 16, 'bold'))
         entry3.grid(row=1, column=2)
         entry3.insert(0, '-1')
-        entry4 = Entry(root2, width=4, fg='blue', font=('Arial', 16, 'bold'))
+        entry4 = Entry(root2, width=20, fg='blue', font=('Arial', 16, 'bold'))
         entry4.grid(row=1, column=3)
         entry4.insert(0, '')
         entry5 = Entry(root2, width=4, fg='blue', font=('Arial', 16, 'bold'))
@@ -496,14 +507,14 @@ def btnCommand_workWithTableFlower():
         entry7.grid(row=1, column=6)
         entry7.insert(0, '-1')
 
-        btn_accept = Button(root2, text="Принять", command=btnAccept, width=25)
+        btn_accept = Button(root2, text="Принять", command=btnAccept, width=20)
         btn_accept.grid(row=2, column=1)
-        btn_no = Button(root2, text="Отмена", command=root2.destroy, width=25)
-        btn_no.grid(row=2, column=2)
+        btn_no = Button(root2, text="Отмена", command=root2.destroy, width=20)
+        btn_no.grid(row=2, column=3)
 
     root1 = Toplevel()
     root1.title('Таблица "Цветы"')
-    root1.geometry("400x250+400+400")
+    root1.geometry("400x250+550+200")
     btn_clearTable = Button(root1, text="Очистить таблицу", command=btnCommand_clearTable)
 
     btn_printTable = Button(root1, text="Вывести таблицу", command=btnCommand_printTableFlower)
@@ -531,7 +542,7 @@ if __name__ == '__main__':
     # Creating GUI
     root = Tk()
     root.title('Магазин цветов - склад')
-    root.geometry("400x250+400+400")
+    root.geometry("400x250+550+200")
 
     button_createDB = Button(text="Создать базу данных", command=btnCommand_createDB)
     button_deleteDB = Button(text="Удалить базу данных", command=btnCommand_deleteDB)
