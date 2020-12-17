@@ -1,7 +1,7 @@
 CREATE EXTENSION IF NOT EXISTS dblink; -- чтобы иметь возможность создавать базы данных внутри функции
 -- dblink позволяет делать запросы у "удаленным" базам данных
 
-DROP FUNCTION IF EXISTS create_db(text, text); -- взял со стак оферфлоу
+DROP FUNCTION IF EXISTS create_db(text, text); 
 CREATE FUNCTION create_db(dbname text, username text)
 	RETURNS INTEGER AS
 	$func$
@@ -11,7 +11,7 @@ CREATE FUNCTION create_db(dbname text, username text)
 			RETURN 0; 
 		ELSE
    			PERFORM dblink_exec('user=db_creator password=db_creator dbname=' || current_database(),
-								'CREATE DATABASE ' || dbname); -- тут мои логин и пароль
+								'CREATE DATABASE ' || dbname); 
 								
 			PERFORM dblink_exec('user=db_creator password=db_creator dbname=' || dbname,
 				'DROP TABLE IF EXISTS Provider CASCADE;

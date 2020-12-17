@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox as mb
 import engine as en
 
-DB_NAME = 'name'
+DB_NAME = 'new_database'
 USER_NAME = 'viktor'
 USER_PASSWORD = 'viktor'
 

@@ -9,10 +9,6 @@ from sqlalchemy_utils import create_database, database_exists, drop_database
 # выделенный пользователь - viktor, пароль - viktor, он подключается к существующей базе данных
 # база данных создается суперпользователем db_creator
 
-
-# TODO: сделать так, чтобы функции сообщали о том, что они сделали (или чего сделать не получилось)
-# триггер почему-то не работает
-
 fin = open('create_drop_func.sql')
 cr_dr_func = fin.read()
 fin.close()
@@ -164,28 +160,3 @@ def print_table_flower(connection):
     cursor.execute('SELECT print_table_flower()')
     table = cursor.fetchall()
     return table
-
-# Черновик:
-# add_to_provider(conn_u, 2,	'БАЗА ЦВЕТОВ 24', 'Ленинский', 0)
-# add_to_worker(conn_u, 2,	'Илья Дорошенко',		'Автозаводский',	31000)
-# add_to_flower(conn_u, 1200, 	'Роза',	2,    '2020/01/20', 'красный', 2, 10, 159)
-# out = search_flower_by_name(conn_u, 'Роза')
-# update_flower(conn_u, 127, 'Цк', -1, '2020/01/20', ' ', 2, 15, 200)
-# clear_provider(conn_u)
-
-
-# --- Создание базы данных ---
-#create_database('new', 'viktor', cr_dr_func)
-
-# --- удаление базы данных ---
-# disconnect_user(conn_u) # обязательно нужно дисконнектить пользователя перед удалением базы (и отключаться в pgadmin)
-# drop_database('new', cr_dr_func)
-
-#conn_u = connect_as_user('viktor', 'viktor', 'new', func)  # коннектимся к базе как юзер, функция возвращает connection
-#add_to_provider(conn_u, 2, 'БАЗА ЦВЕТОВ 24', 'Ленинский',
-#              0)  # объект connection используется для всех функций работы с бд
-#add_to_worker(conn_u, 2, 'Илья Дорошенко', 'Автозаводский', 31000)
-#add_to_flower(conn_u, 1201, 'Роза', 2, 'красный', 2, 10, 159)
-# update_flower(conn_u, 1200, 'Хризантема', -1, '2020/01/20', ' ', 2, 15, 280)
-
-# delete_flower_by_name(conn_u, 'Хризантема')
